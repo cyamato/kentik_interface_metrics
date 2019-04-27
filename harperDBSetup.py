@@ -56,6 +56,7 @@ parser.add_argument('--harperdb_table',
 
 cliArgs = parser.parse_args(sys.argv[1:])
 error = False # Set if there is a major error in the config
+print(cliArgs)
 if cliArgs.harperdb_url is not None:
   print(cliArgs.harperdb_url)
   harper['url'] = cliArgs.harperdb_url
@@ -66,13 +67,13 @@ else:
 if cliArgs.harperdb_user is not None:
   harper['auth']['user'] = cliArgs.harperdb_user
 else:
-  print("Harper harperdb_url not set", file=sys.stderr)
+  print("Harper harperdb_user not set", file=sys.stderr)
   error = True
 
 if cliArgs.harperdb_password is not None:
   harper['auth']['password'] = cliArgs.harperdb_password
 else:
-  print("Harper harperdb_url not set", file=sys.stderr)
+  print("Harper harperdb_password not set", file=sys.stderr)
   error = True
 
 if cliArgs.harperdb_schema is not None:

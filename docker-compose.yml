@@ -6,6 +6,10 @@ services:
       - harperdb_hdb:/opt/HarperDB/hdb
     ports:
       - "9925:9925"
+    labels:
+      com.kentik.deployment: poc
+      com.kentik.disc: "Recuring Get Inteface Metrics From Kentik"
+      com.kentik.type: "pull data"
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:9925"]
       interval: 5m
@@ -32,7 +36,11 @@ services:
         - KENTIK_HARPERDB_TABLE=${KENTIK_HARPERDB_TABLE}
         - KENTIK_QUERY_TIME_INCROMENT=${KENTIK_QUERY_TIME_INCROMENT}
         - KENTIK_QUERY_TIME_AMOUNT=${KENTIK_QUERY_TIME_AMOUNT}
-    image: kentik/getKentikInterfaces
+    image: kentik/get_kentik_interfaces
+    labels:
+      com.kentik.deployment: poc
+      com.kentik.disc: "Recuring Get Inteface Metrics From Kentik"
+      com.kentik.type: "pull data"
     environment:
         - KENTIK_URL=${KENTIK_URL}
         - KENTIK_API_USER=${KENTIK_API_USER}
@@ -46,3 +54,10 @@ services:
         - KENTIK_QUERY_TIME_AMOUNT=${KENTIK_QUERY_TIME_AMOUNT}
     depends_on:
       - "harperdb"
+
+volumes:
+  harperdb_hdb:
+    labels:
+      com.kentik.deployment: poc
+      com.kentik.disc: "HarperDB Store"
+      com.kentik.type: database
