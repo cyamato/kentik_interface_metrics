@@ -5,13 +5,13 @@ services:
     volumes:
       - harperdb_hdb:/opt/HarperDB/hdb
     ports:
-      "9925:9925"
+      - "9925:9925"
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:9925"]
       interval: 10m
       timeout: 10s
       retries: 3
-      start_period: 1m
+      start_period: 60s
     logging:
       driver: "json-file"
       options:
