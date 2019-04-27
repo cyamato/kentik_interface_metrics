@@ -1,0 +1,73 @@
+{
+  "queries": [
+    {
+      "bucket": "Left +Y Axis",
+      "query": {
+        "all_devices": false,
+        "depth": 350,
+        "device_name": [
+          "pe3_nyc1"
+        ],
+        "fastData": "Full",
+        "metric": [
+          "bytes",
+          "avg_sample_rate",
+          "fps"
+        ],
+        "outsort": "avg_bits_per_sec",
+        "starting_time": "2019-04-21 00:00",
+        "ending_time": "2019-04-22 00:00",
+        "topx": 1,
+        "aggregates": [
+          {
+            "column": "f_sum_both_bytes",
+            "fn": "average",
+            "unit": "bytes",
+            "name": "avg_bits_per_sec"
+          },
+          {
+            "column": "f_sum_both_bytes",
+            "fn": "percentile",
+            "rank": 95,
+            "unit": "bytes",
+            "name": "p95th_bits_per_sec"
+          },
+          {
+            "column": "f_sum_both_bytes",
+            "fn": "percentile",
+            "rank": 99,
+            "unit": "bytes",
+            "name": "p99th_bits_per_sec"
+          },
+          {
+            "column": "f_sum_both_bytes",
+            "fn": "max",
+            "unit": "bytes",
+            "name": "max_bits_per_sec"
+          },
+          {
+            "column": "f_avg_sample_rate",
+            "fn": "average",
+            "unit": "avg_sample_rate",
+            "name": "avg_avg_sample_rate"
+          },
+          {
+            "column": "trautocount",
+            "columnPrefixes": [
+              "f_fumlat",
+              "f_fsumloc"
+            ],
+            "fn": "average",
+            "unit": "fps",
+            "name": "avg_flows_per_sec"
+          }
+        ],
+        "filters_obj": {
+          "connector": "All",
+          "filterGroups": []
+        },
+        "dimension": []
+      }
+    }
+  ]
+}
