@@ -8,10 +8,9 @@ services:
       - "9925:9925"
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:9925"]
-      interval: 10m
+      interval: 5m
       timeout: 10s
-      retries: 3
-      start_period: 60s
+      retries: 6
     logging:
       driver: "json-file"
       options:
