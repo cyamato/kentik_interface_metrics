@@ -275,7 +275,7 @@ class KentikInterfaceInfo:
             print('No local config file found')
 
         # Get Docker Secrets
-        kentikDockerSecrets = {}
+        kentikDockerSecrets = None
         try:
             with open('/run/secrets/kentik_api.yml', 'r') as yamlConfig:
                 try:
@@ -284,7 +284,7 @@ class KentikInterfaceInfo:
                     print(exc)
         except FileNotFoundError as e:
             print('No Kentik secrets found')
-        harperDockerSecrets = {}
+        harperDockerSecrets = None
         try:
             with open('/run/secrets/harperdb.yml', 'r') as yamlConfig:
                 try:
@@ -299,16 +299,16 @@ class KentikInterfaceInfo:
             self.gArgs.url = cliArgs.url
         elif localEnvArgs.url is not None:
             self.gArgs.url = localEnvArgs.url
-        elif fileArgs.url is not None:
+        elif hasattr(fileArgs,'url'):
             self.gArgs.url = fileArgs.url
             
         if cliArgs.user is not None:
             self.gArgs.user = cliArgs.user
         elif localEnvArgs.user is not None:
             self.gArgs.user = localEnvArgs.user
-        elif fileArgs.user is not None:
+        elif hasattr(fileArgs,'user'):
             self.gArgs.user = fileArgs.user
-        elif kentikDockerSecrets.user is not None:
+        elif hasattr(kentikDockerSecrets, 'user'):
             self.gArgs.user = kentikDockerSecrets.user
         else:
             self.logger.critical("Kentik API user is not set")
@@ -318,9 +318,9 @@ class KentikInterfaceInfo:
             self.gArgs.token = cliArgs.token
         elif localEnvArgs.token is not None:
             self.gArgs.token = localEnvArgs.token
-        elif fileArgs.token is not None:
+        elif hasattr(fileArgs, 'token'):
             self.gArgs.token = fileArgs.token
-        elif kentikDockerSecrets.token is not None:
+        elif hasattr(kentikDockerSecrets,'token'):
             self.gArgs.token = kentikDockerSecrets.token
         else:
             self.logger.critical("Kentik API token is not set")
@@ -330,113 +330,113 @@ class KentikInterfaceInfo:
             self.gArgs.api_limit = cliArgs.api_limit
         elif localEnvArgs.api_limit is not None:
             self.gArgs.api_limit = localEnvArgs.api_limit
-        elif fileArgs.api_limit is not None:
+        elif hasattr(fileArgs, 'api_limit'):
             self.gArgs.api_limit = fileArgs.api_limit
 
         if cliArgs.api_query_limit is not None:
             self.gArgs.api_query_limit = cliArgs.api_query_limit
         elif localEnvArgs.api_query_limit is not None:
             self.gArgs.api_query_limit = localEnvArgs.api_query_limit
-        elif fileArgs.api_query_limit is not None:
+        elif hasattr(fileArgs,'api_query_limit'):
             self.gArgs.api_query_limit = fileArgs.api_query_limit
         
         if cliArgs.loglevel is not None:
             self.gArgs.loglevel = cliArgs.loglevel
         elif localEnvArgs.loglevel is not None:
             self.gArgs.loglevel = localEnvArgs.loglevel
-        elif fileArgs.loglevel is not None:
+        elif hasattr(fileArgs,'loglevel'):
             self.gArgs.loglevel = fileArgs.loglevel
         
         if cliArgs.harperdb_url is not None:
             self.gArgs.harperdb_url = cliArgs.harperdb_url
         elif localEnvArgs.harperdb_url is not None:
             self.gArgs.harperdb_url = localEnvArgs.harperdb_url
-        elif fileArgs.harperdb_url is not None:
+        elif hasattr(fileArgs, 'harperdb_url'):
             self.gArgs.harperdb_url = fileArgs.harperdb_url
         
         if cliArgs.harperdb_user is not None:
             self.gArgs.harperdb_user = cliArgs.harperdb_user
         elif localEnvArgs.harperdb_user is not None:
             self.gArgs.harperdb_user = localEnvArgs.harperdb_user
-        elif fileArgs.harperdb_user is not None:
+        elif hasattr(fileArgs,'harperdb_user'):
             self.gArgs.harperdb_user = fileArgs.harperdb_user
-        elif harperDockerSecrets.user is not None:
+        elif hasattr(harperDockerSecrets,'user'):
             self.gArgs.harperdb_user = harperDockerSecrets.user
         
         if cliArgs.harperdb_password is not None:
             self.gArgs.harperdb_password = cliArgs.harperdb_password
         elif localEnvArgs.harperdb_password is not None:
             self.gArgs.harperdb_password = localEnvArgs.harperdb_password
-        elif fileArgs.harperdb_password is not None:
+        elif hasattr(fileArgs,'harperdb_password'):
             self.gArgs.harperdb_password = fileArgs.harperdb_password
-        elif harperDockerSecrets.password is not None:
+        elif hasattr(harperDockerSecrets,'password'):
             self.gArgs.harperdb_password = harperDockerSecrets.password
         
         if cliArgs.harperdb_schema is not None:
             self.gArgs.harperdb_schema = cliArgs.harperdb_schema
         elif localEnvArgs.harperdb_schema is not None:
             self.gArgs.harperdb_schema = localEnvArgs.harperdb_schema
-        elif fileArgs.harperdb_schema is not None:
+        elif hasattr(fileArgs,'harperdb_schema'):
             self.gArgs.harperdb_schema = fileArgs.harperdb_schema
         
         if cliArgs.harperdb_table is not None:
             self.gArgs.harperdb_table = cliArgs.harperdb_table
         elif localEnvArgs.harperdb_table is not None:
             self.gArgs.harperdb_table = localEnvArgs.harperdb_table
-        elif fileArgs.harperdb_table is not None:
+        elif hasattr(fileArgs,'harperdb_table'):
             self.gArgs.harperdb_table = fileArgs.harperdb_table
         
         if cliArgs.query_time_incorment is not None:
             self.gArgs.query_time_incorment = cliArgs.query_time_incorment
         elif localEnvArgs.query_time_incorment is not None:
             self.gArgs.query_time_incorment = localEnvArgs.query_time_incorment
-        elif fileArgs.query_time_incorment is not None:
+        elif hasattr(fileArgs,'query_time_incorment'):
             self.gArgs.query_time_incorment = fileArgs.query_time_incorment
         
         if cliArgs.query_time_amount is not None:
             self.gArgs.query_time_amount = cliArgs.query_time_amount
         elif localEnvArgs.query_time_amount is not None:
             self.gArgs.query_time_amount = localEnvArgs.query_time_amount
-        elif fileArgs.query_time_amount is not None:
+        elif hasattr(fileArgs,'query_time_amount'):
             self.gArgs.query_time_amount = fileArgs.query_time_amount
 
         if cliArgs.items_per_query is not None:
             self.gArgs.items_per_query = cliArgs.items_per_query
-        elif fileArgs.items_per_query is not None:
+        elif hasattr(fileArgs,'items_per_query'):
             self.gArgs.items_per_query = fileArgs.items_per_query
         
         if cliArgs.queries_per_bucket is not None:
             self.gArgs.queries_per_bucket = cliArgs.queries_per_bucket
-        elif fileArgs.queries_per_bucket is not None:
+        elif hasattr(fileArgs,'queries_per_bucket'):
             self.gArgs.queries_per_bucket = fileArgs.queries_per_bucket
         
         if cliArgs.dbFormat is not None:
             self.gArgs.dbFormat = cliArgs.dbFormat
-        elif fileArgs.dbFormat is not None:
+        elif hasattr(fileArgs,'dbFormat'):
             self.gArgs.dbFormat = fileArgs.dbFormat
         
         if cliArgs.output_file is not None:
             self.gArgs.output_file = cliArgs.output_file
-        elif fileArgs.output_file is not None:
+        elif hasattr(fileArgs,'output_file'):
             self.gArgs.output_file = fileArgs.output_file
         
         if cliArgs.base_query is not None:
             self.gArgs.base_query = cliArgs.base_query
-        elif fileArgs.base_query is not None:
+        elif hasattr(fileArgs,'base_query'):
             self.gArgs.base_query = fileArgs.base_query
         
         if cliArgs.logLoc is not None:
             self.gArgs.logLoc = cliArgs.logLoc
-        elif fileArgs.logLoc is not None:
+        elif hasattr(fileArgs,'logLoc'):
             self.gArgs.logLoc = fileArgs.logLoc
             
-        if fileArgs.filters is not None:
+        if hasattr(fileArgs, 'filters'):
             self.gArgs.filters = fileArgs.filters
             
-        if fileArgs.metrics is not None:
+        if hasattr(fileArgs, 'metrics'):
             self.gArgs.metrics = fileArgs.metrics
             
-        if fileArgs.dimensions is not None:
+        if hasattr(fileArgs, 'dimensions'):
             self.gArgs.dimensions = fileArgs.dimensions
         
         # Garbeg Cleanup; Don't use del as it only removes the memory refrance 

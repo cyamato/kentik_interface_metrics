@@ -22,6 +22,9 @@ harper = {
     'user': 'My_User_Name',
     'password': 'My_Password'
   },
+  'describe_all': {
+    'operation': 'describe_all',
+  },
   'create_schema': {
     'operation': 'create_schema',
     'schema': 'Kentik_Local'
@@ -114,7 +117,7 @@ authStr = 'Basic ' + authStr
 headers={
   'Content-Type': 'application/json',
   'Authorization': authStr
-} 
+}
 
 # function to make harperDB Calls
 def harperDBAPICall(payload):
@@ -130,14 +133,27 @@ def harperDBAPICall(payload):
       try:
           response = req.json()
           print(response['message'])
+          return response
       except ValueError:
           print("Harper Error", file=sys.stderr)
           
   else:
       print("Harper Error: HTTP Response Code", req.status_code, file=sys.stderr)
       print(req.text, file=sys.stderr)
+      
+# function to check if HarperDB is setup
+def checkHarperDB():
+  setup = False
+  db = harperDBAPICall(harper['describe_all'])
+  if harper['create_schema']['schema'] in db.keys():
+    if harper['create_table']['table'] in db[harper['create_schema']['schema']].keys():
+      setup = True
+  
+  if setup:
+    print('HarperDB is already Setup')
+  else:
+    harperDBAPICall(harper['create_schema'])
+    harperDBAPICall(harper['create_table'])
 
 print('Setting Up HarperDB @', harper['url'])
-
-harperDBAPICall(harper['create_schema'])
-harperDBAPICall(harper['create_table'])
+checkHarperDB()

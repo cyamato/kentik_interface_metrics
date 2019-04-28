@@ -22,18 +22,31 @@ services:
       options:
         max-size: "200k"
         max-file: "10"
-    restart: unless-stopped
+    restart: unless-stopped 
+    
+  setupHarper:
+    build:
+      context: .
+    image: kentik/harperSetup
+    networks:
+      - kentik
+    secrets:
+      - harperdb
+    labels:
+      com.kentik.deployment: poc
+      com.kentik.disc: "Check if harper needs to be setup"
+      com.kentik.type: "Check"
+    environment:
+        - KENTIK_HARPERDB_URL=${KENTIK_HARPERDB_URL}
+        - KENTIK_HARPERDB_SCHEMA=${KENTIK_HARPERDB_SCHEMA}
+        - KENTIK_HARPERDB_TABLE=${KENTIK_HARPERDB_TABLE}
+    command: ['python', './harperDBSetup.py', '--harperdb_url=$KENTIK_HARPERDB_URL', '--harperdb_schema=$KENTIK_HARPERDB_SCHEMA', '--harperdb_table=$KENTIK_HARPERDB_TABLE']
+    depends_on:
+      - "harperdb"
     
   getKentikInterfaces:
     build:
       context: .
-      args:
-        - KENTIK_URL=${KENTIK_URL}
-        - KENTIK_HARPERDB_URL=${KENTIK_HARPERDB_URL}
-        - KENTIK_HARPERDB_SCHEMA=${KENTIK_HARPERDB_SCHEMA}
-        - KENTIK_HARPERDB_TABLE=${KENTIK_HARPERDB_TABLE}
-        - KENTIK_QUERY_TIME_INCROMENT=${KENTIK_QUERY_TIME_INCROMENT}
-        - KENTIK_QUERY_TIME_AMOUNT=${KENTIK_QUERY_TIME_AMOUNT}
     image: kentik/get_kentik_interfaces
     networks:
       - kentik
