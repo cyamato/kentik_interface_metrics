@@ -55,10 +55,20 @@ parser.add_argument('--harperdb_table',
   help='The name of the interfaces table')
 
 cliArgs = parser.parse_args(sys.argv[1:])
+
 error = False # Set if there is a major error in the config
-print(cliArgs)
+
+dockerSecrets = {}
+try:
+  with open('/run/secrets/harperdb.yml', 'r') as yamlConfig:
+    try:
+      dockerSecrets = yaml.safe_load(yamlConfig)
+    except yaml.YAMLError as exc:
+      print(exc)
+except FileNotFoundError as e:
+  print('No secrets found')
+
 if cliArgs.harperdb_url is not None:
-  print(cliArgs.harperdb_url)
   harper['url'] = cliArgs.harperdb_url
 else:
   print("Harper harperdb_url not set", file=sys.stderr)
@@ -66,12 +76,16 @@ else:
 
 if cliArgs.harperdb_user is not None:
   harper['auth']['user'] = cliArgs.harperdb_user
+elif hasattr(dockerSecrets, 'user'):
+  harper['auth']['user'] = dockerSecrets.user
 else:
   print("Harper harperdb_user not set", file=sys.stderr)
   error = True
 
 if cliArgs.harperdb_password is not None:
   harper['auth']['password'] = cliArgs.harperdb_password
+elif hasattr(dockerSecrets, 'password'):
+  harper['auth']['password'] = dockerSecrets.password
 else:
   print("Harper harperdb_password not set", file=sys.stderr)
   error = True
@@ -79,13 +93,17 @@ else:
 if cliArgs.harperdb_schema is not None:
   harper['create_schema']['schema'] = cliArgs.harperdb_schema
   harper['create_table']['schema'] = cliArgs.harperdb_schema
-  
+
 if cliArgs.harperdb_table is not None:
   harper['create_table']['table'] = cliArgs.harperdb_table
 
 # Exit if there was an error
 if error:
     sys.exit(1)
+
+print(harper)
+print(harper['auth'])
+print(harper['auth']['user'])
 
 # Make header
 authStr = harper['auth']['user'] + ':' + harper['auth']['password']

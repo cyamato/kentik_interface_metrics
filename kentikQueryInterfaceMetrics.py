@@ -273,6 +273,26 @@ class KentikInterfaceInfo:
                     print(exc)
         except FileNotFoundError as e:
             print('No local config file found')
+
+        # Get Docker Secrets
+        kentikDockerSecrets = {}
+        try:
+            with open('/run/secrets/kentik_api.yml', 'r') as yamlConfig:
+                try:
+                    kentikDockerSecrets = yaml.safe_load(yamlConfig)
+                except yaml.YAMLError as exc:
+                    print(exc)
+        except FileNotFoundError as e:
+            print('No Kentik secrets found')
+        harperDockerSecrets = {}
+        try:
+            with open('/run/secrets/harperdb.yml', 'r') as yamlConfig:
+                try:
+                    harperDockerSecrets = yaml.safe_load(yamlConfig)
+                except yaml.YAMLError as exc:
+                    print(exc)
+        except FileNotFoundError as e:
+            print('No HarperDB secrets found')
             
         # Mix them into one object with the priority of CLI, ENV, File
         if cliArgs.url is not None:
@@ -288,6 +308,8 @@ class KentikInterfaceInfo:
             self.gArgs.user = localEnvArgs.user
         elif fileArgs.user is not None:
             self.gArgs.user = fileArgs.user
+        elif kentikDockerSecrets.user is not None:
+            self.gArgs.user = kentikDockerSecrets.user
         else:
             self.logger.critical("Kentik API user is not set")
             error = True
@@ -298,6 +320,8 @@ class KentikInterfaceInfo:
             self.gArgs.token = localEnvArgs.token
         elif fileArgs.token is not None:
             self.gArgs.token = fileArgs.token
+        elif kentikDockerSecrets.token is not None:
+            self.gArgs.token = kentikDockerSecrets.token
         else:
             self.logger.critical("Kentik API token is not set")
             error = True
@@ -336,6 +360,8 @@ class KentikInterfaceInfo:
             self.gArgs.harperdb_user = localEnvArgs.harperdb_user
         elif fileArgs.harperdb_user is not None:
             self.gArgs.harperdb_user = fileArgs.harperdb_user
+        elif harperDockerSecrets.user is not None:
+            self.gArgs.harperdb_user = harperDockerSecrets.user
         
         if cliArgs.harperdb_password is not None:
             self.gArgs.harperdb_password = cliArgs.harperdb_password
@@ -343,6 +369,8 @@ class KentikInterfaceInfo:
             self.gArgs.harperdb_password = localEnvArgs.harperdb_password
         elif fileArgs.harperdb_password is not None:
             self.gArgs.harperdb_password = fileArgs.harperdb_password
+        elif harperDockerSecrets.password is not None:
+            self.gArgs.harperdb_password = harperDockerSecrets.password
         
         if cliArgs.harperdb_schema is not None:
             self.gArgs.harperdb_schema = cliArgs.harperdb_schema

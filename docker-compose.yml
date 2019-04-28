@@ -6,6 +6,8 @@ services:
       - harperdb_hdb:/opt/HarperDB/hdb
     ports:
       - "9925:9925"
+    networks:
+      - kentik
     labels:
       com.kentik.deployment: poc
       com.kentik.disc: "Recuring Get Inteface Metrics From Kentik"
@@ -27,27 +29,24 @@ services:
       context: .
       args:
         - KENTIK_URL=${KENTIK_URL}
-        - KENTIK_API_USER=${KENTIK_API_USER}
-        - KENTIK_API_TOKEN=${KENTIK_API_TOKEN}
         - KENTIK_HARPERDB_URL=${KENTIK_HARPERDB_URL}
-        - KENTIK_HARPERDB_USER=${KENTIK_HARPERDB_USER}
-        - KENTIK_HARPERDB_PASSWORD=${KENTIK_HARPERDB_PASSWORD}
         - KENTIK_HARPERDB_SCHEMA=${KENTIK_HARPERDB_SCHEMA}
         - KENTIK_HARPERDB_TABLE=${KENTIK_HARPERDB_TABLE}
         - KENTIK_QUERY_TIME_INCROMENT=${KENTIK_QUERY_TIME_INCROMENT}
         - KENTIK_QUERY_TIME_AMOUNT=${KENTIK_QUERY_TIME_AMOUNT}
     image: kentik/get_kentik_interfaces
+    networks:
+      - kentik
+    secrets:
+      - kentik_api
+      - harperdb
     labels:
       com.kentik.deployment: poc
       com.kentik.disc: "Recuring Get Inteface Metrics From Kentik"
       com.kentik.type: "pull data"
     environment:
         - KENTIK_URL=${KENTIK_URL}
-        - KENTIK_API_USER=${KENTIK_API_USER}
-        - KENTIK_API_TOKEN=${KENTIK_API_TOKEN}
         - KENTIK_HARPERDB_URL=${KENTIK_HARPERDB_URL}
-        - KENTIK_HARPERDB_USER=${KENTIK_HARPERDB_USER}
-        - KENTIK_HARPERDB_PASSWORD=${KENTIK_HARPERDB_PASSWORD}
         - KENTIK_HARPERDB_SCHEMA=${KENTIK_HARPERDB_SCHEMA}
         - KENTIK_HARPERDB_TABLE=${KENTIK_HARPERDB_TABLE}
         - KENTIK_QUERY_TIME_INCROMENT=${KENTIK_QUERY_TIME_INCROMENT}
@@ -61,3 +60,16 @@ volumes:
       com.kentik.deployment: poc
       com.kentik.disc: "HarperDB Store"
       com.kentik.type: database
+
+networks:
+  kentik:
+    attachable: true
+    labels:
+      com.kentik.deployment: poc
+      com.kentik.disc: "Kentik Overlay"
+
+secrets:
+  kentik_api:
+    file: ./kentik_api.yml
+  harperdb:
+    file: ./harperdb.yml
