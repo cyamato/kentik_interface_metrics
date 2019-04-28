@@ -27,7 +27,7 @@ services:
   setupHarper:
     build:
       context: .
-    image: kentik/harperSetup
+    image: kentik/harper_setup
     networks:
       - kentik
     secrets:
