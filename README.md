@@ -35,16 +35,16 @@ python3 kentikQueryInterfaceMetrics.py \
 ```
 
 #### kentikQueryInterfaceMetrics.py switch commands
-  * '--config', YAML file with config settigs; defualts to config.yaml
-  * '--url', The target url for the Kentik KDE Cluster API; Defualts to US Public
+  * '--config', YAML file with config settings; defaults to config.yaml
+  * '--url', The target url for the Kentik KDE Cluster API; Defaults to US Public
   * '--user', The KDE user name used to make api calls
   * '--token', The KDE token to used to make api calls
-  * '--api_limit', The number of delay second for KDE non query api limit calls
-  * '--api_query_limit', The number of delay second for KDE query api limit calls
-  * '--items_per_query', The number of filter that will should produce one result each
-  * '--queries_per_bucket', The number of queries to included in a request to Kentik
-  * '--query_time_incorment', What query incremnt (minute | hour | day | month)  min is from now, hr is from the last hr, day and month are from midnite
-  * '--query_time_amount', How many time incroments to query for
+  * '--api_limit', The number of delays second for KDE non-query api limit calls
+  * '--api_query_limit', The number of delays second for KDE query api limit calls
+  * '--items_per_query', The number of filters that will produce one result each
+  * '--queries_per_bucket', The number of queries to include in a request to Kentik
+  * '--query_time_incorment', What query increment (minute | hour | day | month)  min is from now, hr is from the last hr, day and month are from midnite
+  * '--query_time_amount', How many time increments to query for
   * '--dbFormat', The format that record that will be sent to the local database [column | json]
   * '--output_file', The name of the JSON file used for the output - This will match the last sent information to the local DB
   * '--base_query', The name of the json file with the base Kentik query to be used
@@ -55,7 +55,7 @@ python3 kentikQueryInterfaceMetrics.py \
   * '--harperdb_password', The HarperDB Password
   * '--harperdb_schema', The name of the Kentik Schema
   * '--harperdb_table', The name of the interfaces table
-  
+
 #### kentikQueryInterfaceMetrics.py Enviroment Varabules:
   * KENTIK_URL
   * KENTIK_API_USER

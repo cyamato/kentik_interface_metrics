@@ -207,21 +207,25 @@ class KentikInterfaceInfo:
         parser.add_argument('-v', '--version', action='version', 
             version='%(prog)s 1.0')
         parser.add_argument('-c', '--config', default='./config.yaml',
-            help='YAML file with config settigs; defualts to config.yaml')
+            help='YAML file with config settings; defaults to config.yaml')
         parser.add_argument('-l', '--url',
-            help='The target url for the Kentik KDE Cluster API; Defualts to US Public')
+            help='The target url for the Kentik KDE Cluster API; Defaults to US Public')
         parser.add_argument('-u', '--user', 
             help='The KDE user name used to make api calls')
         parser.add_argument('-t', '--token',
             help='The KDE token to used to make api calls')
         parser.add_argument('--api_limit',
-            help='The number of delay second for KDE non query api limit calls')
+            help='The number of delays second for KDE non-query api limit calls')
         parser.add_argument('--api_query_limit',
             help='The number of delay second for KDE query api limit calls')
         parser.add_argument('--items_per_query',
-            help='The number of filter that will should produce one result each')
+            help='The number of filters that will produce one result each')
+        parser.add_argument('--query_time_incorment',
+            help='What query increment (minute | hour | day | month)  min is from now, hr is from the last hr, day and month are from midnite')
+        parser.add_argument('--query_time_amount',
+            help= 'How many time increments to query for')
         parser.add_argument('--queries_per_bucket',
-            help='The number of queries to included in a request to Kentik')
+            help='The number of queries to include in a request to Kentik')
         parser.add_argument('--dbFormat',
             help='The format that record that will be sent to the local database [column | json]')
         parser.add_argument('--output_file',
@@ -242,10 +246,6 @@ class KentikInterfaceInfo:
             help='The name of the Kentik Schema')
         parser.add_argument('--harperdb_table',
             help='The name of the interfaces table')
-        parser.add_argument('--query_time_incorment',
-            help='What query incremnt (minute | hour | day | month)  min is from now, hr is from the last hr, day and month are from midnite')
-        parser.add_argument('--query_time_amount',
-            help= 'How many time incroments to query for')
 
         cliArgs = parser.parse_args(sys.argv[1:])
     
