@@ -1,4 +1,52 @@
-This set of containers and scripts that will check Kentik for interface usage and store it in a HarperDB database
+This is a set of containers and scripts that will check Kentik for interface usage and store it in a HarperDB database
+
+---
+
+kentikQueryInterfaceMetrics.py is the main Python 3 script for gathering interface metrics
+The defualt output pre DB processing is:
+```
+  [{
+    'ifIndex': ,
+    'alias': ,
+    'disc': ,
+    'capacity': ,
+    'network_boundary': ,
+    'connectivity_type': ,
+    'provider': ,
+    'vrf': ,
+    'interface_ip': ,
+    'deviceName': ,
+    'deviceSampleRate': ,
+    'siteName': ,
+    'top_nexthop_asns': ,
+    'fromTime': ,
+    'toTime': ,
+    'avg_bits_per_sec': ,
+    'p95th_bits_per_sec': ,
+    'p99th_bits_per_sec': ,
+    'max_bits_per_sec': ,
+    'avg_avg_sample_rate': ,
+    'avg_flows_per_sec': 
+  }]
+```
+
+It will also output this to a json text file at --logLoc + --output_file which defualts to ./data.json
+
+The last Kentik request and resposne will be logged to --logLoc as lastRequest.json and lastResponse.json
+
+Script loggs are sent to stdout/sdterr and the file logs.log in --logLoc
+
+To change the database used write a new DB handler function and change the pointer in the ```addResultsToLocalDB``` function.  The dbArray var holds the array described above.
+
+---
+
+kentikBaseQuery.json file is the base query that is used for requests to Kentik.  Change this file to change the request including deminsions, filters, and metrics 
+
+---
+
+harperDBSetup.py file is a Python 3 script to setup a HarperDB for use with the kentikQueryInterfaceMetrics.py
+
+---
 
 ### Docker
 
